@@ -36,8 +36,14 @@ class AuthCubit extends Cubit<AuthStates> {
         showToastMessage(message: "Welcome back, ${userModel!.user!.name}");
       }
     } on DioError catch (e) {
-      // showToastMessage(message: "${e.response!.data['error']['message']}");
-      showToastMessage(message: "Invalid email or password", toastColor: Colors.red);
+      if(e.response != null) {
+        showToastMessage(message: "${e.response!.data['error']['message']}", toastColor: Colors.red);
+      }
+      else
+      {
+        showToastMessage(message: "Error happened", toastColor: Colors.red);
+
+      }
 
       emit(FailedLoginState());
     }
@@ -55,14 +61,19 @@ class AuthCubit extends Cubit<AuthStates> {
         "password": password,
         "name": name,
       });
-      if (value.statusCode == 200) {
         userModel = User.fromJson(value.data);
         emit(SuccessSignUpState(userModel!));
         clearFields();
         showToastMessage(message: "Welcome, ${userModel!.user!.name}");
-      }
     } on DioError catch (e) {
-      showToastMessage(message: "${e.response!.data['error']['message']}", toastColor: Colors.red);
+      if(e.response != null) {
+        showToastMessage(message: "${e.response!.data['error']['message']}", toastColor: Colors.red);
+      }
+      else
+        {
+          showToastMessage(message: "Error happened", toastColor: Colors.red);
+
+        }
 
       emit(FailedSignUpState());
     }

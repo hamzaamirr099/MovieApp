@@ -10,6 +10,7 @@ import 'package:orange_interview/models/movie_model.dart';
 import 'package:orange_interview/models/movie_profile_model.dart';
 import 'package:orange_interview/models/upcoming_model.dart';
 
+import '../../../shared/functions.dart';
 import '../../network/remote/dio_helper.dart';
 
 class MainCubit extends Cubit<MainStates> {
@@ -41,19 +42,19 @@ class MainCubit extends Cubit<MainStates> {
     allMovies = [];
     try {
       Response value = await DioHelper.getData(url: 'movies', accessToken: userToken);
-      if(value.statusCode == 200)
-        {
-          debugPrint(value.data.toString());
+          // debugPrint(value.data.toString());
           for (var movie in value.data) {
             allMovies.add(Movie.fromJson(movie));
           }
-        }
 
     } on DioError catch (e) {
-      if (e.response == null) {
-        debugPrint(e.response!.data);
-      } else {
-        debugPrint(e.response!.data);
+      if(e.response != null) {
+        showToastMessage(message: "${e.response!.data['error']['message']}", toastColor: Colors.red);
+      }
+      else
+      {
+        showToastMessage(message: "Error happened", toastColor: Colors.red);
+
       }
       emit(FailedGetMoviesState());
     }
@@ -67,18 +68,18 @@ class MainCubit extends Cubit<MainStates> {
       Response value = await DioHelper.getData(
           url: 'movies/upcoming', accessToken: userToken);
 
-      if(value.statusCode == 200)
-        {
-          debugPrint(value.data.toString());
+          // debugPrint(value.data.toString());
           for (var movie in value.data) {
             upcomingMovies.add(UpcomingMovie.fromJson(movie));
           }
-        }
     } on DioError catch (e) {
-      if (e.response == null) {
-        debugPrint(e.response!.data);
-      } else {
-        debugPrint(e.response!.data);
+      if(e.response != null) {
+        showToastMessage(message: "${e.response!.data['error']['message']}", toastColor: Colors.red);
+      }
+      else
+      {
+        showToastMessage(message: "Error happened", toastColor: Colors.red);
+
       }
     }
   }
@@ -98,15 +99,17 @@ class MainCubit extends Cubit<MainStates> {
 
       }
     } on DioError catch (e) {
-      if (e.response == null) {
-        debugPrint(e.response!.data);
-        emit(FailedGetMovieProfileState());
 
-      } else {
-        debugPrint(e.response!.data);
-        emit(FailedGetMovieProfileState());
+      if(e.response != null) {
+        showToastMessage(message: "${e.response!.data['error']['message']}", toastColor: Colors.red);
+      }
+      else
+      {
+        showToastMessage(message: "Error happened", toastColor: Colors.red);
 
       }
+      emit(FailedGetMovieProfileState());
+
     }
   }
 

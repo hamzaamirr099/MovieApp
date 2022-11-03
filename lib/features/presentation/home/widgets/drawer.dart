@@ -13,6 +13,7 @@ class MyDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AuthCubit authCubit = AuthCubit.get(context);
     return SafeArea(
       child: Container(
         color: Colors.grey[900],
@@ -22,16 +23,16 @@ class MyDrawer extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
               child: Row(
-                children: const [
-                  CircleAvatar(
+                children: [
+                  const CircleAvatar(
                     radius: 30,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Expanded(
                     child: Text(
-                      "Hamza Mahmoud",
+                      authCubit.userModel != null? '${authCubit.userModel!.user!.name}' : "Hamza Mahmoud",
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),

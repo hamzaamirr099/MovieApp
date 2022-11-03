@@ -33,52 +33,47 @@ class RegisterScreen extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                const Text("Register", style: TextStyle(fontSize: 50)),
+                const Text(
+                  "Register",
+                  style: TextStyle(fontSize: 50, fontFamily: 'salsa'),
+                ),
                 const SizedBox(
                   height: 30,
                 ),
                 DefaultFormField(
-                  validator: (value)
-                  {
-                    if(value == null || value.isEmpty) {
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
                       return 'Required field';
                     }
                     return null;
-
                   },
                   hintText: "Full Name",
                   controller: authCubit.registerNameController,
                   prefixIcon: Icons.person_outline,
-
                 ),
                 const SizedBox(
                   height: 30,
                 ),
                 DefaultFormField(
-                  validator: (value)
-                  {
-                    if(value == null || value.isEmpty) {
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
                       return 'Required field';
                     }
                     return null;
-
                   },
                   hintText: "Email",
                   controller: authCubit.registerEmailController,
                   prefixIcon: Icons.email_outlined,
-
                 ),
                 const SizedBox(
                   height: 30,
                 ),
                 DefaultFormField(
-                  validator: (value)
-                  {
-                    if(value == null || value.isEmpty) {
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
                       return 'Required field';
                     }
                     return null;
-
                   },
                   hintText: "Password",
                   isPassword: true,
@@ -89,11 +84,10 @@ class RegisterScreen extends StatelessWidget {
                   height: 30,
                 ),
                 BlocConsumer<AuthCubit, AuthStates>(
-                  listener: (context, state) async {
+                  listener: (context, state) {
                     if (state is SuccessSignUpState) {
                       userToken = state.userModel.accessToken!;
-                      await CacheHelper.saveData(
-                          key: 'userToken', value: userToken);
+                      CacheHelper.saveData(key: 'userToken', value: userToken);
                       navigateAndRelease(context, MainLayoutScreen());
                     }
                   },
@@ -103,14 +97,14 @@ class RegisterScreen extends StatelessWidget {
                       builder: (context) => DefaultButton(
                         buttonText: "Sign Up",
                         onPressed: () {
-                          if(formKey.currentState!.validate())
-                            {
-                              authCubit.signup(
-                                name: authCubit.registerNameController.text,
-                                email: authCubit.registerEmailController.text,
-                                password: authCubit.registerPasswordController.text,
-                              );
-                            }
+                          if (formKey.currentState!.validate()) {
+                            authCubit.signup(
+                              name: authCubit.registerNameController.text,
+                              email: authCubit.registerEmailController.text,
+                              password:
+                                  authCubit.registerPasswordController.text,
+                            );
+                          }
                         },
                       ),
                       fallback: (context) =>
